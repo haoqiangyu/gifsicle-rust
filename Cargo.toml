@@ -1,0 +1,17 @@
+[package]
+name = "gifsicle"
+version = "1.92.0"
+authors = ["Eddie Kohler <ekohler@gmail.com>", "Kornel <kornel@geekhood.net>", "Hans Dinsen-Hansen <dino@danbbs.dk>"]
+edition = "2018"
+links = "gifsicle"
+license-file = "vendor/COPYING"
+readme = "README.md"
+include = ["/src/*.rs", "/build.rs", "/vendor/COPYING", "/README.md", "/Cargo.toml", "/vendor/src/*.[ch]", "/vendor/include/*/*.h"]
+homepage = "https://www.lcdf.org/gifsicle/"
+repository = "https://gitlab.com/kornelski/gifsicle-rust.git"
+
+[build-dependencies]
+cc = "1.0.45"
+
+[dependencies]
+libc = "0.2.62"
