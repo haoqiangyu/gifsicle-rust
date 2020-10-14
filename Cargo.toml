@@ -1,7 +1,7 @@
 [package]
 name = "gifsicle"
 description = "Bindings for gifsicle library. Supports lossy compression. GPL."
-version = "1.92.1"
+version = "1.92.2"
 authors = ["Eddie Kohler <ekohler@gmail.com>", "Kornel <kornel@geekhood.net>", "Hans Dinsen-Hansen <dino@danbbs.dk>"]
 edition = "2018"
 links = "gifsicle"

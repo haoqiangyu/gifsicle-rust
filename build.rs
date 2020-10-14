@@ -25,6 +25,7 @@ fn main() {
         #define PATHNAME_SEPARATOR '/'
         #define RANDOM random
         #define OUTPUT_GIF_TO_TERMINAL 1
+        #define GIF_ALLOCATOR_DEFINED 1
         #define SIZEOF_UNSIGNED_INT 4
     "#, if is_msvc {""} else {"#define HAVE_MKSTEMP 1"})).expect("OUT_DIR/config.h");
 
