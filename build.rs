@@ -23,7 +23,7 @@ fn main() {
         #define HAVE_UINT64_T 1
         #define HAVE_UINTPTR_T 1
         #define PATHNAME_SEPARATOR '/'
-        #define RANDOM random
+        #define RANDOM rand
         #define OUTPUT_GIF_TO_TERMINAL 1
         #define GIF_ALLOCATOR_DEFINED 1
         #define SIZEOF_UNSIGNED_INT 4
