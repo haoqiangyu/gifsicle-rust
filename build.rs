@@ -8,8 +8,8 @@ fn main() {
     let out_dir = PathBuf::from(&env::var_os("OUT_DIR").expect("OUT_DIR"));
 
     let target_pointer_width = env::var("CARGO_CFG_TARGET_POINTER_WIDTH").expect("target");
-    let target = env::var("TARGET").expect("target");
-    let is_msvc = target.ends_with("-msvc");
+    let target_os = env::var("CARGO_CFG_TARGET_OS").expect("target");
+    let is_windows = target_os == "windows";
 
     std::fs::write(out_dir.join("config.h"), format!(r#"
         {}
@@ -27,11 +27,11 @@ fn main() {
         #define OUTPUT_GIF_TO_TERMINAL 1
         #define GIF_ALLOCATOR_DEFINED 1
         #define SIZEOF_UNSIGNED_INT 4
-    "#, if is_msvc {""} else {"#define HAVE_MKSTEMP 1"})).expect("OUT_DIR/config.h");
+    "#, if is_windows {""} else {"#define HAVE_MKSTEMP 1"})).expect("OUT_DIR/config.h");
 
     cc.define("HAVE_CONFIG_H", Some("1"));
     cc.define("SIZEOF_VOID_P", Some(if target_pointer_width == "32" {"4"} else {"8"}));
-    cc.define("SIZEOF_UNSIGNED_LONG", Some(if target_pointer_width == "32" || is_msvc {"4"} else {"8"}));
+    cc.define("SIZEOF_UNSIGNED_LONG", Some(if target_pointer_width == "32" || is_windows {"4"} else {"8"}));
     cc.define("VERSION", Some(concat!("\"", env!("CARGO_PKG_VERSION"), "\"")));
     cc.define("main", Some("gifsicle_main"));
 
