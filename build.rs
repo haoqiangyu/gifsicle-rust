@@ -1,5 +1,5 @@
 use std::path::PathBuf;
-use std::env;
+use std::{env, fs};
 
 fn main() {
     let mut cc = cc::Build::new();
@@ -11,23 +11,26 @@ fn main() {
     let target_os = env::var("CARGO_CFG_TARGET_OS").expect("target");
     let is_windows = target_os == "windows";
 
+    let windows_cfgh = if is_windows {fs::read_to_string("vendor/src/win32cfg.h").unwrap()} else {String::new()};
+
     std::fs::write(out_dir.join("config.h"), format!(r#"
-        {}
-        #define HAVE_INT64_T 1
-        #define HAVE_INTTYPES_H 1
-        #define HAVE_POW 1
-        #define HAVE_STRERROR 1
-        #define HAVE_STRTOUL 1
-        #define HAVE_SYS_TYPES_H 1
-        #define HAVE_SYS_STAT_H 1
-        #define HAVE_UINT64_T 1
-        #define HAVE_UINTPTR_T 1
-        #define PATHNAME_SEPARATOR '/'
-        #define RANDOM rand
-        #define OUTPUT_GIF_TO_TERMINAL 1
-        #define GIF_ALLOCATOR_DEFINED 1
-        #define SIZEOF_UNSIGNED_INT 4
-    "#, if is_windows {""} else {"#define HAVE_MKSTEMP 1"})).expect("OUT_DIR/config.h");
+{}
+#define HAVE_INT64_T 1
+#define HAVE_INTTYPES_H 1
+#define HAVE_POW 1
+#define HAVE_STRERROR 1
+#define HAVE_STRTOUL 1
+#define HAVE_SYS_TYPES_H 1
+#define HAVE_SYS_STAT_H 1
+#define HAVE_UINT64_T 1
+#define HAVE_UINTPTR_T 1
+#define PATHNAME_SEPARATOR '/'
+#define RANDOM rand
+#define OUTPUT_GIF_TO_TERMINAL 1
+#define GIF_ALLOCATOR_DEFINED 1
+#define SIZEOF_UNSIGNED_INT 4
+{}
+    "#, if is_windows {""} else {"#define HAVE_MKSTEMP 1"}, windows_cfgh)).expect("OUT_DIR/config.h");
 
     cc.define("HAVE_CONFIG_H", Some("1"));
     cc.define("SIZEOF_VOID_P", Some(if target_pointer_width == "32" {"4"} else {"8"}));
